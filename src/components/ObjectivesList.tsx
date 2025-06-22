@@ -1,7 +1,22 @@
 
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Edit, Trash2 } from "lucide-react";
 
-export const ObjectivesList = ({ objectives }) => {
+interface ObjectivesListProps {
+  objectives: Array<{
+    id: number;
+    title: string;
+    target: number;
+    current: number;
+    emoji: string;
+  }>;
+  onEditObjective: (objective: any) => void;
+  onDeleteObjective: (id: number) => void;
+}
+
+export const ObjectivesList = ({ objectives, onEditObjective, onDeleteObjective }: ObjectivesListProps) => {
   if (objectives.length === 0) {
     return (
       <div className="text-center py-8 text-gray-500">
@@ -29,10 +44,48 @@ export const ObjectivesList = ({ objectives }) => {
                   R$ {objective.current.toLocaleString('pt-BR')} de R$ {objective.target.toLocaleString('pt-BR')}
                 </p>
               </div>
-              <div className="text-right">
-                <span className="text-lg font-bold text-blue-600">
-                  {progress.toFixed(0)}%
-                </span>
+              <div className="flex items-center gap-2">
+                <div className="text-right">
+                  <span className="text-lg font-bold text-blue-600">
+                    {progress.toFixed(0)}%
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onEditObjective(objective)}
+                  className="h-8 w-8 p-0"
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Excluir objetivo</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Tem certeza que deseja excluir o objetivo "{objective.title}"? Esta ação não pode ser desfeita.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => onDeleteObjective(objective.id)}
+                        className="bg-red-600 hover:bg-red-700"
+                      >
+                        Excluir
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
             

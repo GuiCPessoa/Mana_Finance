@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Plus, CreditCard, Target, TrendingUp, TrendingDown, DollarSign } from "lucide-react";
 import { AddTransactionDialog } from "@/components/AddTransactionDialog";
 import { AddObjectiveDialog } from "@/components/AddObjectiveDialog";
+import { EditTransactionDialog } from "@/components/EditTransactionDialog";
+import { EditObjectiveDialog } from "@/components/EditObjectiveDialog";
 import { TransactionsList } from "@/components/TransactionsList";
 import { ObjectivesList } from "@/components/ObjectivesList";
 import { FinancialChart } from "@/components/FinancialChart";
@@ -12,6 +14,11 @@ import { FinancialChart } from "@/components/FinancialChart";
 const Index = () => {
   const [showAddTransaction, setShowAddTransaction] = useState(false);
   const [showAddObjective, setShowAddObjective] = useState(false);
+  const [showEditTransaction, setShowEditTransaction] = useState(false);
+  const [showEditObjective, setShowEditObjective] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [editingObjective, setEditingObjective] = useState(null);
+  
   const [transactions, setTransactions] = useState([
     {
       id: 1,
@@ -62,8 +69,38 @@ const Index = () => {
     setTransactions([...transactions, { ...transaction, id: Date.now() }]);
   };
 
+  const editTransaction = (id, updatedTransaction) => {
+    setTransactions(transactions.map(t => 
+      t.id === id ? { ...updatedTransaction, id } : t
+    ));
+  };
+
+  const deleteTransaction = (id) => {
+    setTransactions(transactions.filter(t => t.id !== id));
+  };
+
   const addObjective = (objective) => {
     setObjectives([...objectives, { ...objective, id: Date.now() }]);
+  };
+
+  const editObjective = (id, updatedObjective) => {
+    setObjectives(objectives.map(o => 
+      o.id === id ? { ...updatedObjective, id } : o
+    ));
+  };
+
+  const deleteObjective = (id) => {
+    setObjectives(objectives.filter(o => o.id !== id));
+  };
+
+  const handleEditTransaction = (transaction) => {
+    setEditingTransaction(transaction);
+    setShowEditTransaction(true);
+  };
+
+  const handleEditObjective = (objective) => {
+    setEditingObjective(objective);
+    setShowEditObjective(true);
   };
 
   return (
@@ -72,7 +109,7 @@ const Index = () => {
         {/* Header */}
         <div className="text-center py-6">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            Mana Finanças
+            Mana
           </h1>
           <p className="text-slate-600">Gerencie suas finanças de forma simples e intuitiva</p>
         </div>
@@ -149,7 +186,11 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <TransactionsList transactions={transactions.slice(-5)} />
+                <TransactionsList 
+                  transactions={transactions.slice(-5)} 
+                  onEditTransaction={handleEditTransaction}
+                  onDeleteTransaction={deleteTransaction}
+                />
               </CardContent>
             </Card>
 
@@ -157,7 +198,7 @@ const Index = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-green-600" />
-                  Gráfico de Despesas
+                  Análise Financeira
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -176,7 +217,11 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ObjectivesList objectives={objectives} />
+                <ObjectivesList 
+                  objectives={objectives} 
+                  onEditObjective={handleEditObjective}
+                  onDeleteObjective={deleteObjective}
+                />
               </CardContent>
             </Card>
           </div>
@@ -193,6 +238,20 @@ const Index = () => {
           open={showAddObjective}
           onOpenChange={setShowAddObjective}
           onAddObjective={addObjective}
+        />
+
+        <EditTransactionDialog 
+          open={showEditTransaction}
+          onOpenChange={setShowEditTransaction}
+          transaction={editingTransaction}
+          onEditTransaction={editTransaction}
+        />
+
+        <EditObjectiveDialog 
+          open={showEditObjective}
+          onOpenChange={setShowEditObjective}
+          objective={editingObjective}
+          onEditObjective={editObjective}
         />
       </div>
     </div>
