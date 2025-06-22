@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,7 @@ export const EditTransactionDialog = ({ open, onOpenChange, transaction, onEditT
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
 
-  useState(() => {
+  useEffect(() => {
     if (transaction) {
       setType(transaction.type);
       setDescription(transaction.description);
