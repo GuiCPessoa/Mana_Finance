@@ -17,6 +17,8 @@ const TransactionFilters = () => {
 
   const { transactions, editTransaction, deleteTransaction } = useAppContext();
 
+  console.log('TransactionFilters page - transactions:', transactions.length, transactions);
+
   const filteredTransactions = transactions.filter(transaction => {
     switch (filter) {
       case "pix":
@@ -27,6 +29,8 @@ const TransactionFilters = () => {
         return true;
     }
   });
+
+  console.log('Filtered transactions:', filteredTransactions.length, 'with filter:', filter);
 
   const handleEditTransaction = (transaction) => {
     setEditingTransaction(transaction);

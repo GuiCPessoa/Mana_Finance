@@ -36,45 +36,65 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [objectives, setObjectives] = useState<Objective[]>([]);
 
+  console.log('AppProvider rendering with transactions:', transactions.length, 'objectives:', objectives.length);
+
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
-    setTransactions(prev => [...prev, { ...transaction, id: Date.now() }]);
+    const newTransaction = { ...transaction, id: Date.now() };
+    console.log('Adding transaction:', newTransaction);
+    setTransactions(prev => {
+      const updated = [...prev, newTransaction];
+      console.log('Updated transactions:', updated);
+      return updated;
+    });
   };
 
   const editTransaction = (id: number, updatedTransaction: Omit<Transaction, 'id'>) => {
+    console.log('Editing transaction:', id, updatedTransaction);
     setTransactions(prev => prev.map(t => 
       t.id === id ? { ...updatedTransaction, id } : t
     ));
   };
 
   const deleteTransaction = (id: number) => {
+    console.log('Deleting transaction:', id);
     setTransactions(prev => prev.filter(t => t.id !== id));
   };
 
   const addObjective = (objective: Omit<Objective, 'id'>) => {
-    setObjectives(prev => [...prev, { ...objective, id: Date.now() }]);
+    const newObjective = { ...objective, id: Date.now() };
+    console.log('Adding objective:', newObjective);
+    setObjectives(prev => {
+      const updated = [...prev, newObjective];
+      console.log('Updated objectives:', updated);
+      return updated;
+    });
   };
 
   const editObjective = (id: number, updatedObjective: Omit<Objective, 'id'>) => {
+    console.log('Editing objective:', id, updatedObjective);
     setObjectives(prev => prev.map(o => 
       o.id === id ? { ...updatedObjective, id } : o
     ));
   };
 
   const deleteObjective = (id: number) => {
+    console.log('Deleting objective:', id);
     setObjectives(prev => prev.filter(o => o.id !== id));
   };
 
+  const contextValue = {
+    transactions,
+    objectives,
+    addTransaction,
+    editTransaction,
+    deleteTransaction,
+    addObjective,
+    editObjective,
+    deleteObjective
+  };
+
   return (
-    <AppContext.Provider value={{
-      transactions,
-      objectives,
-      addTransaction,
-      editTransaction,
-      deleteTransaction,
-      addObjective,
-      editObjective,
-      deleteObjective
-    }}>
+    <AppContext.Provider value={contextValue}>
       {children}
     </AppContext.Provider>
   );

@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, CreditCard, Target, TrendingUp, TrendingDown, DollarSign } from "lucide-react";
+import { Link } from "react-router-dom";
 import { AddTransactionDialog } from "@/components/AddTransactionDialog";
 import { AddObjectiveDialog } from "@/components/AddObjectiveDialog";
 import { EditTransactionDialog } from "@/components/EditTransactionDialog";
@@ -30,6 +30,8 @@ const Index = () => {
     editObjective,
     deleteObjective
   } = useAppContext();
+
+  console.log('Index page - transactions:', transactions.length, 'objectives:', objectives.length);
 
   const totalIncome = transactions
     .filter(t => t.type === "income")
@@ -121,13 +123,14 @@ const Index = () => {
             Novo Objetivo
           </Button>
 
-          <Button 
-            onClick={() => window.location.href = '/transaction-filters'}
-            className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <CreditCard className="h-4 w-4 mr-2" />
-            Filtrar por Pagamento
-          </Button>
+          <Link to="/transaction-filters">
+            <Button 
+              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <CreditCard className="h-4 w-4 mr-2" />
+              Filtrar por Pagamento
+            </Button>
+          </Link>
         </div>
 
         {/* Main Content Grid */}
