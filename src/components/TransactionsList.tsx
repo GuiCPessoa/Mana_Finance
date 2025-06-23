@@ -1,6 +1,7 @@
 
-import { TrendingUp, TrendingDown, Edit, Trash2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Edit, Trash2, CreditCard, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -12,6 +13,7 @@ interface TransactionsListProps {
     amount: number;
     date: string;
     category: string;
+    paymentMethod?: string;
   }>;
   onEditTransaction: (transaction: any) => void;
   onDeleteTransaction: (id: number) => void;
@@ -26,6 +28,31 @@ export const TransactionsList = ({ transactions, onEditTransaction, onDeleteTran
       </div>
     );
   }
+
+  const getPaymentMethodBadge = (paymentMethod: string) => {
+    switch (paymentMethod) {
+      case "PIX":
+        return (
+          <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200">
+            <Zap className="h-3 w-3 mr-1" />
+            PIX
+          </Badge>
+        );
+      case "Cartão de Crédito":
+        return (
+          <Badge variant="secondary" className="bg-blue-100 text-blue-700 hover:bg-blue-200">
+            <CreditCard className="h-3 w-3 mr-1" />
+            Cartão
+          </Badge>
+        );
+      default:
+        return (
+          <Badge variant="outline">
+            {paymentMethod || "PIX"}
+          </Badge>
+        );
+    }
+  };
 
   return (
     <ScrollArea className="h-[400px] w-full">
@@ -49,7 +76,10 @@ export const TransactionsList = ({ transactions, onEditTransaction, onDeleteTran
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900">{transaction.description}</h4>
-                <p className="text-sm text-gray-500">{transaction.category}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <p className="text-sm text-gray-500">{transaction.category}</p>
+                  {getPaymentMethodBadge(transaction.paymentMethod || "PIX")}
+                </div>
               </div>
             </div>
             

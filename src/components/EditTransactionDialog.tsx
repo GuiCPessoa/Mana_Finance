@@ -16,6 +16,7 @@ interface EditTransactionDialogProps {
     amount: number;
     date: string;
     category: string;
+    paymentMethod?: string;
   } | null;
   onEditTransaction: (id: number, transaction: any) => void;
 }
@@ -26,6 +27,7 @@ export const EditTransactionDialog = ({ open, onOpenChange, transaction, onEditT
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   useEffect(() => {
     if (transaction) {
@@ -34,6 +36,7 @@ export const EditTransactionDialog = ({ open, onOpenChange, transaction, onEditT
       setAmount(transaction.amount.toString());
       setDate(transaction.date);
       setCategory(transaction.category);
+      setPaymentMethod(transaction.paymentMethod || "PIX");
     }
   }, [transaction]);
 
@@ -46,17 +49,20 @@ export const EditTransactionDialog = ({ open, onOpenChange, transaction, onEditT
     "Salário", "Freelance", "Investimentos", "Vendas", "Outros"
   ];
 
+  const paymentMethods = ["PIX", "Cartão de Crédito"];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!transaction || !description || !amount || !date || !category) return;
+    if (!transaction || !description || !amount || !date || !category || !paymentMethod) return;
 
     onEditTransaction(transaction.id, {
       type,
       description,
       amount: parseFloat(amount),
       date,
-      category
+      category,
+      paymentMethod
     });
 
     onOpenChange(false);
@@ -129,6 +135,22 @@ export const EditTransactionDialog = ({ open, onOpenChange, transaction, onEditT
                 {(type === "expense" ? expenseCategories : incomeCategories).map((cat) => (
                   <SelectItem key={cat} value={cat}>
                     {cat}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="paymentMethod">Método de Pagamento</Label>
+            <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione o método" />
+              </SelectTrigger>
+              <SelectContent>
+                {paymentMethods.map((method) => (
+                  <SelectItem key={method} value={method}>
+                    {method}
                   </SelectItem>
                 ))}
               </SelectContent>

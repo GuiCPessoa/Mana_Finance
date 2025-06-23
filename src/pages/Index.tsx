@@ -26,7 +26,8 @@ const Index = () => {
       description: "Salário",
       amount: 3500,
       date: "2024-06-01",
-      category: "Salário"
+      category: "Salário",
+      paymentMethod: "PIX"
     },
     {
       id: 2,
@@ -34,7 +35,8 @@ const Index = () => {
       description: "Supermercado",
       amount: 450,
       date: "2024-06-15",
-      category: "Alimentação"
+      category: "Alimentação",
+      paymentMethod: "Cartão de Crédito"
     }
   ]);
   
@@ -171,6 +173,14 @@ const Index = () => {
           >
             <Target className="h-4 w-4 mr-2" />
             Novo Objetivo
+          </Button>
+
+          <Button 
+            onClick={() => window.location.href = '/transaction-filters'}
+            className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <CreditCard className="h-4 w-4 mr-2" />
+            Filtrar por Pagamento
           </Button>
         </div>
 
