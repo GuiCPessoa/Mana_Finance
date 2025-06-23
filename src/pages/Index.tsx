@@ -10,6 +10,7 @@ import { EditObjectiveDialog } from "@/components/EditObjectiveDialog";
 import { TransactionsList } from "@/components/TransactionsList";
 import { ObjectivesList } from "@/components/ObjectivesList";
 import { FinancialChart } from "@/components/FinancialChart";
+import { useAppContext } from "@/contexts/AppContext";
 
 const Index = () => {
   const [showAddTransaction, setShowAddTransaction] = useState(false);
@@ -19,43 +20,16 @@ const Index = () => {
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [editingObjective, setEditingObjective] = useState(null);
   
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      type: "income",
-      description: "Salário",
-      amount: 3500,
-      date: "2024-06-01",
-      category: "Salário",
-      paymentMethod: "PIX"
-    },
-    {
-      id: 2,
-      type: "expense",
-      description: "Supermercado",
-      amount: 450,
-      date: "2024-06-15",
-      category: "Alimentação",
-      paymentMethod: "Cartão de Crédito"
-    }
-  ]);
-  
-  const [objectives, setObjectives] = useState([
-    {
-      id: 1,
-      title: "Viagem de Férias",
-      target: 3000,
-      current: 800,
-      emoji: "✈️"
-    },
-    {
-      id: 2,
-      title: "Reserva de Emergência",
-      target: 10000,
-      current: 2500,
-      emoji: "🛡️"
-    }
-  ]);
+  const {
+    transactions,
+    objectives,
+    addTransaction,
+    editTransaction,
+    deleteTransaction,
+    addObjective,
+    editObjective,
+    deleteObjective
+  } = useAppContext();
 
   const totalIncome = transactions
     .filter(t => t.type === "income")
@@ -66,34 +40,6 @@ const Index = () => {
     .reduce((sum, t) => sum + t.amount, 0);
     
   const balance = totalIncome - totalExpenses;
-
-  const addTransaction = (transaction) => {
-    setTransactions([...transactions, { ...transaction, id: Date.now() }]);
-  };
-
-  const editTransaction = (id, updatedTransaction) => {
-    setTransactions(transactions.map(t => 
-      t.id === id ? { ...updatedTransaction, id } : t
-    ));
-  };
-
-  const deleteTransaction = (id) => {
-    setTransactions(transactions.filter(t => t.id !== id));
-  };
-
-  const addObjective = (objective) => {
-    setObjectives([...objectives, { ...objective, id: Date.now() }]);
-  };
-
-  const editObjective = (id, updatedObjective) => {
-    setObjectives(objectives.map(o => 
-      o.id === id ? { ...updatedObjective, id } : o
-    ));
-  };
-
-  const deleteObjective = (id) => {
-    setObjectives(objectives.filter(o => o.id !== id));
-  };
 
   const handleEditTransaction = (transaction) => {
     setEditingTransaction(transaction);

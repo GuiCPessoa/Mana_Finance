@@ -7,6 +7,7 @@ import { TransactionsList } from "@/components/TransactionsList";
 import { EditTransactionDialog } from "@/components/EditTransactionDialog";
 import { ArrowLeft, Filter, CreditCard, Zap, List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "@/contexts/AppContext";
 
 const TransactionFilters = () => {
   const navigate = useNavigate();
@@ -14,36 +15,7 @@ const TransactionFilters = () => {
   const [showEditTransaction, setShowEditTransaction] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
 
-  // Sample data - in a real app this would come from props or context
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      type: "income",
-      description: "Salário",
-      amount: 3500,
-      date: "2024-06-01",
-      category: "Salário",
-      paymentMethod: "PIX"
-    },
-    {
-      id: 2,
-      type: "expense",
-      description: "Supermercado",
-      amount: 450,
-      date: "2024-06-15",
-      category: "Alimentação",
-      paymentMethod: "Cartão de Crédito"
-    },
-    {
-      id: 3,
-      type: "expense",
-      description: "Combustível",
-      amount: 120,
-      date: "2024-06-16",
-      category: "Transporte",
-      paymentMethod: "PIX"
-    }
-  ]);
+  const { transactions, editTransaction, deleteTransaction } = useAppContext();
 
   const filteredTransactions = transactions.filter(transaction => {
     switch (filter) {
@@ -56,17 +28,7 @@ const TransactionFilters = () => {
     }
   });
 
-  const editTransaction = (id: number, updatedTransaction: any) => {
-    setTransactions(transactions.map(t => 
-      t.id === id ? { ...updatedTransaction, id } : t
-    ));
-  };
-
-  const deleteTransaction = (id: number) => {
-    setTransactions(transactions.filter(t => t.id !== id));
-  };
-
-  const handleEditTransaction = (transaction: any) => {
+  const handleEditTransaction = (transaction) => {
     setEditingTransaction(transaction);
     setShowEditTransaction(true);
   };
