@@ -1,5 +1,5 @@
-
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
+import usePersistentState from '@/hooks/usePersistentState';
 
 interface Transaction {
   id: number;
@@ -33,8 +33,8 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [objectives, setObjectives] = useState<Objective[]>([]);
+  const [transactions, setTransactions] = usePersistentState<Transaction[]>('transactions', []);
+  const [objectives, setObjectives] = usePersistentState<Objective[]>('objectives', []);
 
   console.log('AppProvider rendering with transactions:', transactions.length, 'objectives:', objectives.length);
 
