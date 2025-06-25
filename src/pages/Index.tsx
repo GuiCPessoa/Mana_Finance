@@ -1,7 +1,8 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, CreditCard, Target, TrendingUp, TrendingDown, DollarSign } from "lucide-react";
+import { Plus, CreditCard, Target, TrendingUp, TrendingDown, DollarSign, Receipt } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AddTransactionDialog } from "@/components/AddTransactionDialog";
 import { AddObjectiveDialog } from "@/components/AddObjectiveDialog";
@@ -23,6 +24,7 @@ const Index = () => {
   const {
     transactions,
     objectives,
+    fixedExpenses,
     addTransaction,
     editTransaction,
     deleteTransaction,
@@ -31,17 +33,34 @@ const Index = () => {
     deleteObjective
   } = useAppContext();
 
-  console.log('Index page - transactions:', transactions.length, 'objectives:', objectives.length);
+  console.log('Index page - transactions:', transactions.length, 'objectives:', objectives.length, 'fixedExpenses:', fixedExpenses.length);
 
   const totalIncome = transactions
     .filter(t => t.type === "income")
     .reduce((sum, t) => sum + t.amount, 0);
     
-  const totalExpenses = transactions
+  const totalTransactionExpenses = transactions
     .filter(t => t.type === "expense")
     .reduce((sum, t) => sum + t.amount, 0);
+
+  const totalFixedExpenses = fixedExpenses.reduce((sum, f) => sum + f.amount, 0);
+  const totalExpenses = totalTransactionExpenses + totalFixedExpenses;
     
   const balance = totalIncome - totalExpenses;
+
+  // Create combined data for charts including fixed expenses
+  const combinedTransactions = [
+    ...transactions,
+    ...fixedExpenses.map(fe => ({
+      id: fe.id,
+      type: 'expense' as const,
+      description: fe.name,
+      amount: fe.amount,
+      date: fe.dueDate,
+      category: fe.category,
+      paymentMethod: 'Conta Fixa'
+    }))
+  ];
 
   const handleEditTransaction = (transaction) => {
     setEditingTransaction(transaction);
@@ -87,6 +106,11 @@ const Index = () => {
               <div className="text-2xl font-bold text-red-700">
                 R$ {totalExpenses.toLocaleString('pt-BR')}
               </div>
+              {totalFixedExpenses > 0 && (
+                <div className="text-xs text-red-600 mt-1">
+                  Inclui R$ {totalFixedExpenses.toLocaleString('pt-BR')} em contas fixas
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -122,6 +146,15 @@ const Index = () => {
             <Target className="h-4 w-4 mr-2" />
             Novo Objetivo
           </Button>
+
+          <Link to="/fixed-expenses">
+            <Button 
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Receipt className="h-4 w-4 mr-2" />
+              Contas Fixas
+            </Button>
+          </Link>
 
           <Link to="/transaction-filters">
             <Button 
@@ -161,7 +194,7 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <FinancialChart transactions={transactions} />
+                <FinancialChart transactions={combinedTransactions} />
               </CardContent>
             </Card>
           </div>
