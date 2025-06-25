@@ -40,7 +40,7 @@ src/
 ├── contexts/
 │   └── AppContext.tsx  # Contexto global para gerenciar transações e objetivos
 ├── hooks/
-│   └── ...             # Hooks customizados
+│   └── usePersistentState.tsx # Hook para persistir estado no localStorage
 ├── pages/
 │   ├── Index.tsx       # Página principal (Dashboard)
 │   ├── TransactionFilters.tsx
@@ -90,11 +90,9 @@ Siga os passos abaixo para configurar e rodar o ambiente de desenvolvimento loca
 ## 5. Arquitetura e Fluxo de Dados
 
 ### Gerenciamento de Estado
-O estado global da aplicação é gerenciado através do `AppContext` (`src/contexts/AppContext.tsx`). Este contexto é responsável por armazenar e manipular:
--   **Transações:** Uma lista de todas as receitas e despesas.
--   **Objetivos:** Uma lista dos objetivos financeiros do usuário.
+O estado global da aplicação (transações e objetivos) é gerenciado através do `AppContext` (`src/contexts/AppContext.tsx`).
 
-**Importante:** Atualmente, o estado é armazenado **apenas em memória**. Isso significa que **todas as transações e objetivos serão perdidos ao recarregar a página**. Para persistir os dados, seria necessário implementar uma solução de armazenamento como `localStorage` ou conectar a um backend.
+Para garantir que os dados do usuário não sejam perdidos ao recarregar a página, a aplicação utiliza um hook customizado, `usePersistentState`. Este hook sincroniza automaticamente o estado com o `localStorage` do navegador. Quando o estado é atualizado, ele é salvo no `localStorage`, e quando a aplicação é carregada, o estado é recuperado, garantindo a persistência dos dados localmente no navegador do usuário.
 
 ### Componentes Chave
 
@@ -106,8 +104,8 @@ O estado global da aplicação é gerenciado através do `AppContext` (`src/cont
 
 ## 6. Próximos Passos e Melhorias Sugeridas
 
--   **Persistência de Dados:** Implementar `localStorage` para salvar os dados no navegador do usuário entre as sessões. Esta é a melhoria mais crítica para tornar a aplicação útil.
--   **Backend e Autenticação:** Para uma solução mais robusta, criar um backend (ex: com Node.js/Express ou um serviço como Firebase/Supabase) para armazenar os dados e adicionar autenticação de usuários.
+-   **Backend e Autenticação:** Para uma solução mais robusta e permitir o acesso multi-dispositivo, o próximo passo é criar um backend (ex: com Supabase ou Firebase) para armazenar os dados de forma segura e adicionar autenticação de usuários.
+-   **Backup e Restauração:** Adicionar funcionalidades para que o usuário possa exportar seus dados (do `localStorage`) para um arquivo JSON e importá-los novamente.
 -   **Melhorar Filtros:** Aprimorar a página `TransactionFilters.tsx` para permitir filtragem avançada por data, categoria, etc.
 -   **Testes:** Adicionar testes unitários e de integração (ex: com Vitest e React Testing Library) para garantir a estabilidade do código.
 -   **Categorias Dinâmicas:** Permitir que o usuário crie, edite e exclua categorias para suas transações. 
