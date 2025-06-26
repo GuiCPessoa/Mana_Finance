@@ -1,73 +1,36 @@
-# Welcome to your Lovable project
+# 🍎 Mana Finance - Vibe Coding
+Continuing my studies and keeping the Vibe Coding alive, here’s my second project in the field. I pushed myself a bit further this time, using Cursor alongside Lovable and deploying everything on Vercel. The result is a personal-finance manager. It isn’t as detailed or comprehensive as some other projects out there, but the main goal was to explore new tools and sharpen my skills. You’ll find the live-deployment link below—feel free to check it out!
 
-## Project info
-
-**URL**: https://lovable.dev/projects/160ddb41-fecc-46fe-ac52-211f62dcbddb
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/160ddb41-fecc-46fe-ac52-211f62dcbddb) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## 🚀 What technologies are used for this project?
 
 This project is built with:
+<div align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=vite,typescript,react,tailwindcss,vercel,github " />
+  </a>
+</div>
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🗃️ Project Preview
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3b90afb9-09fb-4c0c-87b1-55f1ceddd291" alt="Project Preview" height="200"/>
+  <img src="https://github.com/user-attachments/assets/9812df7b-b800-404f-a607-4c5b73448d76" alt="Project Preview" height="200"/>
+  <img src="https://github.com/user-attachments/assets/94fe743c-b054-474f-97c5-c6c6a6854149" alt="Project Preview" height="200"/>
+  <img src="https://github.com/user-attachments/assets/5f4e1664-cab9-4e07-a7ab-9be730327488" alt="Project Preview" height="200"/>
+</p>
 
-## How can I deploy this project?
+## 🚀 Deploy Vercel: https://manafinance.vercel.app/ ◀️
+  
 
-Simply open [Lovable](https://lovable.dev/projects/160ddb41-fecc-46fe-ac52-211f62dcbddb) and click on Share -> Publish.
+## 📑 Learning
+This project was a lot of fun to build, and I’m learning so much about these new tools and how to use them effectively. It might receive updates in the future, but even with a few small bugs, I’m satisfied with its current version (for now). I’ll keep building projects with the Vibe Coding approach, pushing my creativity to create even more exciting things. Vibe Coding is definitely here to challenge old paradigms in IT and software development—we’re at the beginning of a new era, and these tools have enormous growth potential. Anyway, I hope you enjoy the project, and I’ll be back soon with more updates!
 
-## Can I connect a custom domain to my Lovable project?
+The entire project was documented automatically using AI. Initially, I created the documentation manually in a Notion document, including feature prompts and hotfixes for bug fixes. Later, when I integrated Cursor as a development tool, it automatically generated a technical documentation for the project, which can be found in the @docs folder in the repository.
 
-Yes, you can!
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+
+
+
+
+
