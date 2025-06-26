@@ -1,4 +1,3 @@
-
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -20,7 +19,7 @@ interface ObjectivesListProps {
 export const ObjectivesList = ({ objectives, onEditObjective, onDeleteObjective }: ObjectivesListProps) => {
   if (objectives.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-8 text-muted-foreground">
         <p>Nenhum objetivo criado</p>
         <p className="text-sm">Crie seu primeiro objetivo financeiro!</p>
       </div>
@@ -36,19 +35,19 @@ export const ObjectivesList = ({ objectives, onEditObjective, onDeleteObjective 
           return (
             <div
               key={objective.id}
-              className="p-4 rounded-lg border bg-gradient-to-r from-white to-gray-50 hover:shadow-md transition-all duration-200"
+              className="p-4 rounded-lg border bg-card hover:shadow-md transition-all duration-200"
             >
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-2xl">{objective.emoji}</span>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">{objective.title}</h4>
-                  <p className="text-sm text-gray-600">
+                  <h4 className="font-semibold text-foreground">{objective.title}</h4>
+                  <p className="text-sm text-muted-foreground">
                     R$ {objective.current.toLocaleString('pt-BR')} de R$ {objective.target.toLocaleString('pt-BR')}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="text-right">
-                    <span className="text-lg font-bold text-blue-600">
+                    <span className="text-lg font-bold text-primary">
                       {progress.toFixed(0)}%
                     </span>
                   </div>
@@ -65,7 +64,7 @@ export const ObjectivesList = ({ objectives, onEditObjective, onDeleteObjective 
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                        className="h-8 w-8 p-0 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -96,7 +95,7 @@ export const ObjectivesList = ({ objectives, onEditObjective, onDeleteObjective 
                 className="h-3"
               />
               
-              <div className="flex justify-between text-xs text-gray-500 mt-2">
+              <div className="flex justify-between text-xs text-muted-foreground mt-2">
                 <span>Progresso atual</span>
                 <span>Faltam R$ {(objective.target - objective.current).toLocaleString('pt-BR')}</span>
               </div>

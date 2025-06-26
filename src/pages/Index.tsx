@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,7 @@ import { TransactionsList } from "@/components/TransactionsList";
 import { ObjectivesList } from "@/components/ObjectivesList";
 import { FinancialChart } from "@/components/FinancialChart";
 import { useAppContext } from "@/contexts/AppContext";
+import { ModeToggle } from "@/components/theme-toggle";
 
 const Index = () => {
   const [showAddTransaction, setShowAddTransaction] = useState(false);
@@ -73,14 +73,17 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 p-4">
+      <div className="absolute top-4 right-4">
+        <ModeToggle />
+      </div>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center py-6">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
             Mana
           </h1>
-          <p className="text-slate-600">Gerencie suas finanças de forma simples e intuitiva</p>
+          <p className="text-slate-600 dark:text-slate-400">Gerencie suas finanças de forma simples e intuitiva</p>
         </div>
 
         {/* Summary Cards */}

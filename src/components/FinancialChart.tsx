@@ -1,7 +1,17 @@
-
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { useTheme } from '@/components/theme-provider';
+import { useEffect, useState } from 'react';
 
-const COLORS = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899'];
+const getChartColors = () => {
+  return [
+    'hsl(var(--chart-1))',
+    'hsl(var(--chart-2))',
+    'hsl(var(--chart-3))',
+    'hsl(var(--chart-4))',
+    'hsl(var(--chart-5))',
+    'hsl(var(--chart-6))',
+  ];
+};
 
 interface FinancialChartProps {
   transactions: Array<{
@@ -12,6 +22,15 @@ interface FinancialChartProps {
 }
 
 export const FinancialChart = ({ transactions }: FinancialChartProps) => {
+  const { theme } = useTheme();
+  const [chartColors, setChartColors] = useState(getChartColors());
+
+  // As cores são definidas no CSS e podem não estar disponíveis imediatamente.
+  // Este efeito garante que as cores sejam recarregadas quando o tema muda.
+  useEffect(() => {
+    setChartColors(getChartColors());
+  }, [theme]);
+
   const expensesByCategory = transactions
     .filter(t => t.type === 'expense')
     .reduce((acc, transaction) => {
@@ -43,7 +62,7 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
 
   if (expenseData.length === 0 && incomeData.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-8 text-muted-foreground">
         <p>Nenhuma transação para exibir</p>
         <p className="text-sm">Adicione algumas transações para ver os gráficos</p>
       </div>
@@ -54,8 +73,8 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
     <div className="space-y-8">
       {/* Gráfico de Despesas */}
       {expenseData.length > 0 && (
-        <div className="bg-white rounded-lg p-4 border">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Despesas por Categoria</h3>
+        <div className="bg-card rounded-lg p-4 border">
+          <h3 className="text-lg font-semibold text-card-foreground mb-4">Despesas por Categoria</h3>
           <div className="flex items-center gap-8">
             <div className="w-64 h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -70,10 +89,15 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
                     dataKey="value"
                   >
                     {expenseData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
                     ))}
                   </Pie>
                   <Tooltip 
+                    cursor={{ fill: 'hsl(var(--muted))' }}
+                    contentStyle={{ 
+                      backgroundColor: 'hsl(var(--background))',
+                      borderColor: 'hsl(var(--border))'
+                    }}
                     formatter={(value: number) => [`R$ ${value.toLocaleString('pt-BR')}`, 'Valor']}
                   />
                 </PieChart>
@@ -84,17 +108,17 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
               {expenseData.map((entry, index) => {
                 const percentage = ((entry.value / totalExpenses) * 100).toFixed(1);
                 return (
-                  <div key={entry.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={entry.name} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                     <div className="flex items-center gap-3">
                       <div 
                         className="w-4 h-4 rounded-full" 
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        style={{ backgroundColor: chartColors[index % chartColors.length] }}
                       />
-                      <span className="text-gray-700 font-medium">{entry.name}</span>
+                      <span className="text-muted-foreground font-medium">{entry.name}</span>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-gray-900">R$ {entry.value.toLocaleString('pt-BR')}</div>
-                      <div className="text-sm text-gray-500">{percentage}%</div>
+                      <div className="font-bold text-foreground">R$ {entry.value.toLocaleString('pt-BR')}</div>
+                      <div className="text-sm text-muted-foreground">{percentage}%</div>
                     </div>
                   </div>
                 );
@@ -106,8 +130,8 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
 
       {/* Gráfico de Receitas */}
       {incomeData.length > 0 && (
-        <div className="bg-white rounded-lg p-4 border">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Receitas por Categoria</h3>
+        <div className="bg-card rounded-lg p-4 border">
+          <h3 className="text-lg font-semibold text-card-foreground mb-4">Receitas por Categoria</h3>
           <div className="flex items-center gap-8">
             <div className="w-64 h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -122,10 +146,15 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
                     dataKey="value"
                   >
                     {incomeData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
                     ))}
                   </Pie>
-                  <Tooltip 
+                  <Tooltip
+                    cursor={{ fill: 'hsl(var(--muted))' }}
+                    contentStyle={{ 
+                      backgroundColor: 'hsl(var(--background))',
+                      borderColor: 'hsl(var(--border))'
+                    }}
                     formatter={(value: number) => [`R$ ${value.toLocaleString('pt-BR')}`, 'Valor']}
                   />
                 </PieChart>
@@ -136,17 +165,17 @@ export const FinancialChart = ({ transactions }: FinancialChartProps) => {
               {incomeData.map((entry, index) => {
                 const percentage = ((entry.value / totalIncome) * 100).toFixed(1);
                 return (
-                  <div key={entry.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={entry.name} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                     <div className="flex items-center gap-3">
                       <div 
                         className="w-4 h-4 rounded-full" 
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        style={{ backgroundColor: chartColors[index % chartColors.length] }}
                       />
-                      <span className="text-gray-700 font-medium">{entry.name}</span>
+                      <span className="text-muted-foreground font-medium">{entry.name}</span>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-gray-900">R$ {entry.value.toLocaleString('pt-BR')}</div>
-                      <div className="text-sm text-gray-500">{percentage}%</div>
+                      <div className="font-bold text-foreground">R$ {entry.value.toLocaleString('pt-BR')}</div>
+                      <div className="text-sm text-muted-foreground">{percentage}%</div>
                     </div>
                   </div>
                 );

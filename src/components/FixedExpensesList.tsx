@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +29,7 @@ export const FixedExpensesList = ({
 }: FixedExpensesListProps) => {
   if (fixedExpenses.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-8 text-muted-foreground">
         <p>Nenhuma conta fixa cadastrada</p>
         <p className="text-sm">Adicione suas contas fixas mensais para melhor controle financeiro</p>
       </div>
@@ -45,15 +44,15 @@ export const FixedExpensesList = ({
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="bg-gradient-to-br from-red-50 to-rose-100 border border-red-200 rounded-lg p-4">
-          <div className="text-sm text-red-800 font-medium">Total das Contas</div>
-          <div className="text-2xl font-bold text-red-700">
+        <div className="bg-gradient-to-br from-red-50 to-rose-100 dark:from-red-900/30 dark:to-rose-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <div className="text-sm text-red-800 dark:text-red-300 font-medium">Total das Contas</div>
+          <div className="text-2xl font-bold text-red-700 dark:text-red-400">
             R$ {totalAmount.toLocaleString('pt-BR')}
           </div>
         </div>
-        <div className="bg-gradient-to-br from-green-50 to-emerald-100 border border-green-200 rounded-lg p-4">
-          <div className="text-sm text-green-800 font-medium">Já Pago</div>
-          <div className="text-2xl font-bold text-green-700">
+        <div className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
+          <div className="text-sm text-green-800 dark:text-green-300 font-medium">Já Pago</div>
+          <div className="text-2xl font-bold text-green-700 dark:text-green-400">
             R$ {paidAmount.toLocaleString('pt-BR')}
           </div>
         </div>
@@ -73,7 +72,7 @@ export const FixedExpensesList = ({
         <TableBody>
           {fixedExpenses.map((expense) => (
             <TableRow key={expense.id}>
-              <TableCell className="font-medium">{expense.name}</TableCell>
+              <TableCell className="font-medium text-foreground">{expense.name}</TableCell>
               <TableCell>
                 <Badge variant="outline">{expense.category}</Badge>
               </TableCell>
@@ -86,7 +85,10 @@ export const FixedExpensesList = ({
               <TableCell>
                 <Badge 
                   variant={expense.isPaid ? "default" : "destructive"}
-                  className={expense.isPaid ? "bg-green-100 text-green-800 border-green-300" : ""}
+                  className={expense.isPaid 
+                    ? "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 border-green-300 dark:border-green-700" 
+                    : "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 border-red-300 dark:border-red-700"
+                  }
                 >
                   {expense.isPaid ? "Pago" : "Pendente"}
                 </Badge>
@@ -97,7 +99,10 @@ export const FixedExpensesList = ({
                     variant="outline"
                     size="sm"
                     onClick={() => onTogglePayment(expense.id)}
-                    className={expense.isPaid ? "text-orange-600 hover:text-orange-700" : "text-green-600 hover:text-green-700"}
+                    className={expense.isPaid 
+                      ? "text-orange-600 hover:bg-orange-100 dark:hover:bg-orange-900/50" 
+                      : "text-green-600 hover:bg-green-100 dark:hover:bg-green-900/50"
+                    }
                   >
                     <Check className="h-4 w-4" />
                   </Button>
@@ -112,7 +117,7 @@ export const FixedExpensesList = ({
                     variant="outline"
                     size="sm"
                     onClick={() => onDeleteFixedExpense(expense.id)}
-                    className="text-red-600 hover:text-red-700"
+                    className="text-red-600 hover:bg-red-100 dark:hover:bg-red-900/50"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>

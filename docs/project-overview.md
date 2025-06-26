@@ -42,6 +42,8 @@ src/
 │   ├── AddFixedExpenseDialog.tsx
 │   ├── EditFixedExpenseDialog.tsx
 │   └── FixedExpensesList.tsx
+│   ├── theme-provider.tsx # Provedor de contexto para o tema
+│   └── theme-toggle.tsx   # Componente para alternar o tema
 ├── contexts/
 │   └── AppContext.tsx  # Contexto global para gerenciar o estado da aplicação
 ├── hooks/
@@ -102,9 +104,15 @@ O estado global da aplicação é gerenciado através do `AppContext` (`src/cont
 
 Para garantir que os dados do usuário não sejam perdidos ao recarregar a página, a aplicação utiliza um hook customizado, `usePersistentState`. Este hook sincroniza automaticamente o estado com o `localStorage` do navegador. Quando o estado é atualizado, ele é salvo no `localStorage`, e quando a aplicação é carregada, o estado é recuperado, garantindo a persistência dos dados localmente no navegador do usuário.
 
+### Gerenciamento de Tema (Dark/Light Mode)
+A aplicação suporta os modos claro (light) e escuro (dark), com "light" como padrão. A funcionalidade é implementada através de um `ThemeProvider` (`src/components/theme-provider.tsx`), que utiliza a biblioteca `next-themes` para gerenciar o estado do tema.
+
+O tema escolhido pelo usuário é salvo no `localStorage`, garantindo que a preferência persista entre as sessões. A alternância de tema é feita pelo componente `ModeToggle`, que aplica ou remove a classe `dark` do elemento `<html>`, permitindo que o Tailwind CSS aplique os estilos corretos.
+
 ### Componentes Chave
 
 -   `pages/Index.tsx`: O coração da aplicação. Renderiza o dashboard principal, incluindo os cards de resumo (Receitas, Despesas, Saldo), os botões de ação e os principais módulos da tela.
+-   `components/ModeToggle.tsx`: Botão que permite ao usuário alternar entre os temas claro, escuro e o padrão do sistema.
 -   `components/TransactionsList.tsx`: Exibe a lista de transações recentes e permite a edição ou exclusão.
 -   `components/ObjectivesList.tsx`: Exibe a lista de objetivos financeiros.
 -   `components/FixedExpensesList.tsx`: Exibe, permite edição, exclusão e marcação de pagamento das despesas fixas.
