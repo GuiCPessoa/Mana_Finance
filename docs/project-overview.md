@@ -18,7 +18,7 @@ O projeto é construído com um stack de tecnologias moderno baseado em React e 
 - **Gerenciamento de Formulários:** [React Hook Form](https://react-hook-form.com/)
 - **Validação de Schema:** [Zod](https://zod.dev/)
 - **Gráficos:** [Recharts](https://recharts.org/)
-- **Gerenciamento de Estado (Cliente):** [TanStack Query (React Query)](https://tanstack.com/query/latest) e Context API do React, com persistência local via `localStorage`.
+- **Gerenciamento de Estado (Cliente):** [TanStack Query (React Query)](https://tanstack.com/query/latest) para data fetching e caching (embora atualmente o estado seja local) e Context API do React para o estado global.
 
 ### Ferramentas de Desenvolvimento:
 - **Linter:** [ESLint](https://eslint.org/)
@@ -35,6 +35,7 @@ src/
 ├── components/         # Componentes React reutilizáveis
 │   ├── ui/             # Componentes base do shadcn/ui
 │   ├── AddTransactionDialog.tsx
+<<<<<<< HEAD
 │   ├── EditTransactionDialog.tsx
 │   ├── TransactionsList.tsx
 │   ├── AddObjectiveDialog.tsx
@@ -44,8 +45,12 @@ src/
 │   └── FixedExpensesList.tsx
 │   ├── theme-provider.tsx # Provedor de contexto para o tema
 │   └── theme-toggle.tsx   # Componente para alternar o tema
+=======
+│   ├── FinancialChart.tsx
+│   └── ...
+>>>>>>> a07a7cddc4c7ba582cd209379668275a6ebab259
 ├── contexts/
-│   └── AppContext.tsx  # Contexto global para gerenciar o estado da aplicação
+│   └── AppContext.tsx  # Contexto global para gerenciar transações e objetivos
 ├── hooks/
 │   └── usePersistentState.tsx # Hook para persistir estado no localStorage
 ├── pages/
@@ -97,10 +102,7 @@ Siga os passos abaixo para configurar e rodar o ambiente de desenvolvimento loca
 ## 5. Arquitetura e Fluxo de Dados
 
 ### Gerenciamento de Estado
-O estado global da aplicação é gerenciado através do `AppContext` (`src/contexts/AppContext.tsx`). Este contexto é responsável por armazenar e manipular:
--   **Transações:** Uma lista de todas as receitas e despesas variáveis.
--   **Objetivos:** Uma lista dos objetivos financeiros do usuário.
--   **Despesas Fixas:** Uma lista de despesas recorrentes (ex: aluguel, assinaturas).
+O estado global da aplicação (transações e objetivos) é gerenciado através do `AppContext` (`src/contexts/AppContext.tsx`).
 
 Para garantir que os dados do usuário não sejam perdidos ao recarregar a página, a aplicação utiliza um hook customizado, `usePersistentState`. Este hook sincroniza automaticamente o estado com o `localStorage` do navegador. Quando o estado é atualizado, ele é salvo no `localStorage`, e quando a aplicação é carregada, o estado é recuperado, garantindo a persistência dos dados localmente no navegador do usuário.
 
@@ -115,9 +117,8 @@ O tema escolhido pelo usuário é salvo no `localStorage`, garantindo que a pref
 -   `components/ModeToggle.tsx`: Botão que permite ao usuário alternar entre os temas claro, escuro e o padrão do sistema.
 -   `components/TransactionsList.tsx`: Exibe a lista de transações recentes e permite a edição ou exclusão.
 -   `components/ObjectivesList.tsx`: Exibe a lista de objetivos financeiros.
--   `components/FixedExpensesList.tsx`: Exibe, permite edição, exclusão e marcação de pagamento das despesas fixas.
--   `components/Add*Dialog.tsx` e `components/Edit*Dialog.tsx`: Modais utilizados para adicionar e editar transações, objetivos e despesas fixas, utilizando `react-hook-form` e `zod` para validação.
--   `components/FinancialChart.tsx`: Um gráfico de barras (usando Recharts) que visualiza as transações e despesas fixas ao longo do tempo.
+-   `components/AddTransactionDialog.tsx` e `components/AddObjectiveDialog.tsx`: Modais utilizados para adicionar novas transações e objetivos, utilizando `react-hook-form` e `zod` para validação.
+-   `components/FinancialChart.tsx`: Um gráfico de barras (usando Recharts) que visualiza as transações ao longo do tempo.
 
 ## 6. Próximos Passos e Melhorias Sugeridas
 
