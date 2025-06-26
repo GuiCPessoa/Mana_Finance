@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { AddTransactionDialog } from "@/components/AddTransactionDialog";
 import { EditTransactionDialog } from "@/components/EditTransactionDialog";
 import { TransactionsList } from "@/components/TransactionsList";
 import { AddObjectiveDialog } from "@/components/AddObjectiveDialog";
+import { EditObjectiveDialog } from "@/components/EditObjectiveDialog";
 import { ObjectivesList } from "@/components/ObjectivesList";
 import { FinancialChart } from "@/components/FinancialChart";
 import { useAppContext } from "@/contexts/AppContext";

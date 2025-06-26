@@ -1,7 +1,8 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CreditCard, Bank, Money, Wallet } from "lucide-react";
+import { ArrowLeft, CreditCard, Building2, Banknote, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "@/contexts/AppContext";
 import { TransactionsList } from "@/components/TransactionsList";
@@ -9,7 +10,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const TransactionFilters = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
-  const { transactions } = useAppContext();
+  const { transactions, editTransaction, deleteTransaction } = useAppContext();
 
   const filteredTransactions = selectedPaymentMethod
     ? transactions.filter(transaction => transaction.paymentMethod === selectedPaymentMethod)
@@ -21,6 +22,11 @@ const TransactionFilters = () => {
 
   const handlePaymentMethodClick = (method: string | null) => {
     setSelectedPaymentMethod(method);
+  };
+
+  const handleEditTransaction = (transaction: any) => {
+    // Handle edit functionality - you might want to add a dialog here
+    console.log('Edit transaction:', transaction);
   };
 
   return (
@@ -69,14 +75,14 @@ const TransactionFilters = () => {
               variant={selectedPaymentMethod === 'bankTransfer' ? 'default' : 'outline'}
               onClick={() => handlePaymentMethodClick(selectedPaymentMethod === 'bankTransfer' ? null : 'bankTransfer')}
             >
-              <Bank className="h-4 w-4 mr-2" />
+              <Building2 className="h-4 w-4 mr-2" />
               Transferência Bancária
             </Button>
             <Button
               variant={selectedPaymentMethod === 'cash' ? 'default' : 'outline'}
               onClick={() => handlePaymentMethodClick(selectedPaymentMethod === 'cash' ? null : 'cash')}
             >
-              <Money className="h-4 w-4 mr-2" />
+              <Banknote className="h-4 w-4 mr-2" />
               Dinheiro
             </Button>
             <Button
@@ -116,7 +122,11 @@ const TransactionFilters = () => {
               <CardTitle>Transações</CardTitle>
             </CardHeader>
             <CardContent>
-              <TransactionsList transactions={filteredTransactions} />
+              <TransactionsList 
+                transactions={filteredTransactions}
+                onEditTransaction={handleEditTransaction}
+                onDeleteTransaction={deleteTransaction}
+              />
             </CardContent>
           </Card>
         </div>
