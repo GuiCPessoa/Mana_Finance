@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,6 @@ import { AddFixedExpenseDialog } from "@/components/AddFixedExpenseDialog";
 import { EditFixedExpenseDialog } from "@/components/EditFixedExpenseDialog";
 import { FixedExpensesList } from "@/components/FixedExpensesList";
 import { useAppContext } from "@/contexts/AppContext";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 const FixedExpenses = () => {
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -28,7 +28,7 @@ const FixedExpenses = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -43,24 +43,21 @@ const FixedExpenses = () => {
               <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Contas Fixas
               </h1>
-              <p className="text-slate-600 dark:text-slate-400">Gerencie suas despesas recorrentes mensais</p>
+              <p className="text-slate-600">Gerencie suas despesas recorrentes mensais</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <Button 
-              onClick={() => setShowAddDialog(true)}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Nova Conta Fixa
-            </Button>
-          </div>
+          <Button 
+            onClick={() => setShowAddDialog(true)}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Nova Conta Fixa
+          </Button>
         </div>
 
         {/* Main Content */}
-        <Card className="shadow-lg hover:shadow-xl transition-all duration-300 dark:bg-slate-800/50">
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Receipt className="h-5 w-5 text-blue-600" />

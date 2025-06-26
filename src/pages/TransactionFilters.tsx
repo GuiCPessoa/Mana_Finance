@@ -2,134 +2,136 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CreditCard, Building2, Banknote, Wallet } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useAppContext } from "@/contexts/AppContext";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { TransactionsList } from "@/components/TransactionsList";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { EditTransactionDialog } from "@/components/EditTransactionDialog";
+import { ArrowLeft, Filter, CreditCard, Zap, List } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "@/contexts/AppContext";
 
 const TransactionFilters = () => {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const [filter, setFilter] = useState("todas");
+  const [showEditTransaction, setShowEditTransaction] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
+
   const { transactions, editTransaction, deleteTransaction } = useAppContext();
 
-  const filteredTransactions = selectedPaymentMethod
-    ? transactions.filter(transaction => transaction.paymentMethod === selectedPaymentMethod)
-    : transactions;
+  console.log('TransactionFilters page - transactions:', transactions.length, transactions);
 
-  const totalFilteredAmount = filteredTransactions.reduce((sum, transaction) => {
-    return transaction.type === 'income' ? sum + transaction.amount : sum - transaction.amount;
-  }, 0);
+  const filteredTransactions = transactions.filter(transaction => {
+    switch (filter) {
+      case "pix":
+        return transaction.paymentMethod === "PIX";
+      case "cartao":
+        return transaction.paymentMethod === "Cartão de Crédito";
+      default:
+        return true;
+    }
+  });
 
-  const handlePaymentMethodClick = (method: string | null) => {
-    setSelectedPaymentMethod(method);
-  };
+  console.log('Filtered transactions:', filteredTransactions.length, 'with filter:', filter);
 
-  const handleEditTransaction = (transaction: any) => {
-    // Handle edit functionality - you might want to add a dialog here
-    console.log('Edit transaction:', transaction);
+  const handleEditTransaction = (transaction) => {
+    setEditingTransaction(transaction);
+    setShowEditTransaction(true);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900 p-4">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+      <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/">
-              <Button variant="outline" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Voltar
-              </Button>
-            </Link>
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Filtrar por Pagamento
-              </h1>
-              <p className="text-slate-600 dark:text-slate-400">Analise suas transações por método de pagamento</p>
-            </div>
+        <div className="flex items-center gap-4 py-6">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Filtrar por Tipo de Pagamento
+            </h1>
+            <p className="text-slate-600">Visualize suas transações organizadas por método de pagamento</p>
           </div>
-          <ThemeToggle />
         </div>
 
-        {/* Payment Method Filter */}
-        <Card className="shadow-lg hover:shadow-xl transition-all duration-300 dark:bg-slate-800/50">
+        {/* Filter Controls */}
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
           <CardHeader>
-            <CardTitle>Filtrar por Método de Pagamento</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Filter className="h-5 w-5 text-blue-600" />
+              Filtros
+            </CardTitle>
           </CardHeader>
-          <CardContent className="flex gap-4">
-            <Button
-              variant={selectedPaymentMethod === 'creditCard' ? 'default' : 'outline'}
-              onClick={() => handlePaymentMethodClick(selectedPaymentMethod === 'creditCard' ? null : 'creditCard')}
+          <CardContent>
+            <ToggleGroup 
+              type="single" 
+              value={filter} 
+              onValueChange={(value) => value && setFilter(value)}
+              className="justify-start"
             >
-              <CreditCard className="h-4 w-4 mr-2" />
-              Cartão de Crédito
-            </Button>
-            <Button
-              variant={selectedPaymentMethod === 'debitCard' ? 'default' : 'outline'}
-              onClick={() => handlePaymentMethodClick(selectedPaymentMethod === 'debitCard' ? null : 'debitCard')}
-            >
-              <CreditCard className="h-4 w-4 mr-2" />
-              Cartão de Débito
-            </Button>
-            <Button
-              variant={selectedPaymentMethod === 'bankTransfer' ? 'default' : 'outline'}
-              onClick={() => handlePaymentMethodClick(selectedPaymentMethod === 'bankTransfer' ? null : 'bankTransfer')}
-            >
-              <Building2 className="h-4 w-4 mr-2" />
-              Transferência Bancária
-            </Button>
-            <Button
-              variant={selectedPaymentMethod === 'cash' ? 'default' : 'outline'}
-              onClick={() => handlePaymentMethodClick(selectedPaymentMethod === 'cash' ? null : 'cash')}
-            >
-              <Banknote className="h-4 w-4 mr-2" />
-              Dinheiro
-            </Button>
-            <Button
-              variant={selectedPaymentMethod === 'digitalWallet' ? 'default' : 'outline'}
-              onClick={() => handlePaymentMethodClick(selectedPaymentMethod === 'digitalWallet' ? null : 'digitalWallet')}
-            >
-              <Wallet className="h-4 w-4 mr-2" />
-              Carteira Digital
-            </Button>
+              <ToggleGroupItem 
+                value="todas" 
+                aria-label="Todas as transações"
+                className="flex items-center gap-2"
+              >
+                <List className="h-4 w-4" />
+                Todas
+              </ToggleGroupItem>
+              <ToggleGroupItem 
+                value="pix" 
+                aria-label="Transações via PIX"
+                className="flex items-center gap-2"
+              >
+                <Zap className="h-4 w-4" />
+                PIX
+              </ToggleGroupItem>
+              <ToggleGroupItem 
+                value="cartao" 
+                aria-label="Transações no cartão"
+                className="flex items-center gap-2"
+              >
+                <CreditCard className="h-4 w-4" />
+                Cartão de Crédito
+              </ToggleGroupItem>
+            </ToggleGroup>
           </CardContent>
         </Card>
 
-        {/* Results */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Summary Card */}
-          <Card className="shadow-lg hover:shadow-xl transition-all duration-300 dark:bg-slate-800/50">
-            <CardHeader>
-              <CardTitle>Resultado do Filtro</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>
-                Total de Transações:{' '}
-                <span className="font-bold">{filteredTransactions.length}</span>
-              </p>
-              <p>
-                Valor Total:{' '}
-                <span className="font-bold">
-                  R$ {totalFilteredAmount.toFixed(2)}
-                </span>
-              </p>
-            </CardContent>
-          </Card>
+        {/* Filtered Transactions */}
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>
+                {filter === "todas" && "Todas as Transações"}
+                {filter === "pix" && "Transações via PIX"}
+                {filter === "cartao" && "Transações no Cartão de Crédito"}
+              </span>
+              <span className="text-sm font-normal text-gray-500">
+                {filteredTransactions.length} transação(ões)
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <TransactionsList 
+              transactions={filteredTransactions}
+              onEditTransaction={handleEditTransaction}
+              onDeleteTransaction={deleteTransaction}
+            />
+          </CardContent>
+        </Card>
 
-          {/* Transactions List */}
-          <Card className="shadow-lg hover:shadow-xl transition-all duration-300 dark:bg-slate-800/50">
-            <CardHeader>
-              <CardTitle>Transações</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <TransactionsList 
-                transactions={filteredTransactions}
-                onEditTransaction={handleEditTransaction}
-                onDeleteTransaction={deleteTransaction}
-              />
-            </CardContent>
-          </Card>
-        </div>
+        {/* Edit Dialog */}
+        <EditTransactionDialog 
+          open={showEditTransaction}
+          onOpenChange={setShowEditTransaction}
+          transaction={editingTransaction}
+          onEditTransaction={editTransaction}
+        />
       </div>
     </div>
   );
